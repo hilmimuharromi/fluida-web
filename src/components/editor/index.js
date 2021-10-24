@@ -5,32 +5,37 @@ import { Editor } from "react-draft-wysiwyg";
 import { FromHtml, ToHtml } from "utils/draftConvert"
 // import axios from "axios"
 function EditorContainer(props) {
-    // const { data, setData, heightEditor, } = props
+    const { data, setData, editorStyle, isReset, resetEditor  } = props
     const [editorState, setEditorState] = useState(EditorState.createEmpty())
 
-    // useEffect(() => {
-    //     if (data) {
-    //         console.log('dari html', data)
-    //         setEditorState(FromHtml(data))
-    //     }
+    const editorStyleDefault = {
+        height: '500px' || "500px", overflow: "auto"
+
+    }
+
+    useEffect(() => {
+        if (data) {
+            console.log('masuk content')
+            setEditorState(FromHtml(data))
+        }
+        
         // return () => {
         //     setEditorState(EditorState.createEmpty())
         // }
-        // eslint-disable-next-line
-    // }, [])
+    }, [data])
 
-    // useEffect(() => {
-    //     if (!data) {
-    //         setEditorState(EditorState.createEmpty())
-    //     }
-    // }, [data])
+    useEffect(() => {
+        if (!data) {
+            setEditorState(EditorState.createEmpty())
+        }
+    }, [data])
 
-    // useEffect(() => {
-    //     if (isReset) {
-    //         setEditorState(EditorState.createEmpty())
-    //         ResetEditor(false)
-    //     }
-    // }, [isReset])
+    useEffect(() => {
+        if (isReset) {
+            setEditorState(EditorState.createEmpty())
+            resetEditor(false)
+        }
+    }, [isReset])
 
     function uploadImageCallBack(file) {
         return new Promise(
@@ -57,7 +62,6 @@ function EditorContainer(props) {
     }
 
     function handleEmbed(str) {
-        console.log("embed", str)
         if (str.startsWith("<iframe")) {
             const start = str.search("src=")
             const end = str.indexOf(`"`, start + 5)
@@ -72,12 +76,12 @@ function EditorContainer(props) {
                     editorClassName="editor-class"
                     toolbarClassName="toolbar-class"
                     toolbarStyle={{ width: "100%" }}
-                    editorStyle={{ height: '500px' || "500px", overflow: "auto" }}
+                    editorStyle={editorStyle ? editorStyle : editorStyleDefault}
                     wrapperStyle={{ borderStyle: "inset" }}
                     editorState={editorState}
                     onEditorStateChange={(value) => {
                         setEditorState(value)
-                        // setData(ToHtml(editorState))
+                        setData(ToHtml(editorState))
                     }}
                     toolbar={{
                         inline: { inDropdown: true },
@@ -89,7 +93,7 @@ function EditorContainer(props) {
                             embedCallback: handleEmbed,
                             defaultSize: {
                                 height: '500px',
-                                width: '80%',
+                                width: '800px',
                             }
                         },
                         image: { 

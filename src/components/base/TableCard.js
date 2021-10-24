@@ -1,9 +1,9 @@
 import Card from '@material-tailwind/react/Card';
-import {CardHeader, Button, NavbarInput, CardBody} from '@material-tailwind/react';
+import {CardHeader, NavbarInput, CardBody} from '@material-tailwind/react';
 
 
 export default function CardTable(props) {
-    const {title, columns, data, actionTitle, onSearch,searchValue, onAction} = props
+    const {title, columns, data, onSearch, searchValue,  visibleSearch} = props
 
     const headerHandler = (item, index) => {
         if (item.hide) {
@@ -62,9 +62,11 @@ export default function CardTable(props) {
                 <div className="flex justify-between">
                 <h2 className="text-white text-2xl">{title}</h2>
                 <div className="flex space-x-1">
+                    {visibleSearch && 
                 <NavbarInput 
                 value={searchValue}
                 onChange={(e) => onSearch(e.target.value)}/>
+                    }
                 {/* <Button>{actionTitle}</Button> */}
                 </div>
                 </div>

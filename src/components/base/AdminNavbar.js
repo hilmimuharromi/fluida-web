@@ -6,9 +6,12 @@ import Image from '@material-tailwind/react/Image';
 import Dropdown from '@material-tailwind/react/Dropdown';
 import DropdownItem from '@material-tailwind/react/DropdownItem';
 import ProfilePicture from 'assets/img/team-1-800x800.jpg';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {SetUser} from 'stores/action/userAction'
 export default function AdminNavbar({ showSidebar, setShowSidebar }) {
     const location = useLocation().pathname;
+    const dispatch = useDispatch()
+    const user = useSelector((state) => state.user.data)
 
     return (
         <nav className="bg-light-blue-500 md:ml-64 py-6 px-3">
@@ -58,8 +61,9 @@ export default function AdminNavbar({ showSidebar, setShowSidebar }) {
                             <Dropdown
                                 color="transparent"
                                 buttonText={
-                                    <div className="w-12">
-                                        <Image src={ProfilePicture} rounded />
+                                    <div className="w-full flex items-center">
+                                        <h2 className="text-white w-full mr-5">{user.email}</h2>
+                                        <Image width={50} src={ProfilePicture} rounded />
                                     </div>
                                 }
                                 rounded
@@ -68,13 +72,13 @@ export default function AdminNavbar({ showSidebar, setShowSidebar }) {
                                     color: 'transparent',
                                 }}
                             >
-                                <DropdownItem color="lightBlue">
+                                {/* <DropdownItem color="lightBlue">
                                     Action
                                 </DropdownItem>
                                 <DropdownItem color="lightBlue">
                                     Another Action
-                                </DropdownItem>
-                                <DropdownItem color="red">
+                                </DropdownItem> */}
+                                <DropdownItem color="red" onClick={() => dispatch(SetUser(""))}>
                                    Logout
                                 </DropdownItem>
                             </Dropdown>

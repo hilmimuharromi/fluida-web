@@ -4,15 +4,16 @@ import ModalHeader from "@material-tailwind/react/ModalHeader";
 import ModalBody from "@material-tailwind/react/ModalBody";
 import ModalFooter from "@material-tailwind/react/ModalFooter";
 function ModalBase(props) {
-    const {title, visible, setVisible, children} = props
+    const {title, visible, setVisible, children, onSave, titleButton, loading, hideFooter, className} = props
     return (
-        <Modal size="lg" active={visible} toggler={() =>setVisible(false)}>
+        <Modal className={className} size="lg" active={visible} toggler={() =>setVisible(false)}>
         <ModalHeader toggler={() => setVisible(false)}>
             {title}
         </ModalHeader>
         <ModalBody>
           {children}
         </ModalBody>
+        {!hideFooter && 
         <ModalFooter>
             <Button 
                 color="red"
@@ -25,12 +26,14 @@ function ModalBase(props) {
 
             <Button
                 color="green"
-                onClick={(e) =>setVisible(false)}
+                onClick={onSave}
                 ripple="light"
             >
-                Save Changes
+                {loading && <div className="animate-spin rounded-full  h-5 w-5 border-t-2 border-b-2 border-white-500"></div>}
+                {titleButton}
             </Button>
         </ModalFooter>
+        }
     </Modal>
     )
 }
