@@ -6,6 +6,7 @@ import materi from './materi'
 import praktikum from './praktikum'
 import tugasProyek from './tugasProyek'
 import soalLatihan from './soalLatihan'
+import playlist from './playlist'
 const persistConfig = {
     key: 'root',
     storage,
@@ -13,7 +14,7 @@ const persistConfig = {
 }
 
 const reducers = combineReducers({
-    user, materi, praktikum, tugasProyek, soalLatihan
+    user, materi, praktikum, tugasProyek, soalLatihan, playlist
 })
 
 const persistedReducer = persistReducer(persistConfig, reducers)
