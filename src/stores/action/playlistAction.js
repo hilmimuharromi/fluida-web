@@ -16,6 +16,14 @@ const SetPlaylist = (data) => {
     };
 }
 
+
+const SetCurrentPlaylist = (data) => {
+    console.log('playlist', data)
+    return {
+        type: 'SET_CURRENT_PLAYLIST', payload: data
+    };
+}
+
 export {
-    GetListPlaylist
+    GetListPlaylist, SetCurrentPlaylist
 }

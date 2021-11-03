@@ -1,6 +1,6 @@
 const initialState = {
     data: [],
-    // currentData: '',
+    currentData: '',
     // visibleForm: false,
     // visibleContent: false,
     // loading: false,
@@ -14,22 +14,12 @@ const initialState = {
           data: action.payload,
         };
   
-    //   case 'SET_VISIBLE_FORM_MATERI':
-    //     return {
-    //       ...state,
-    //       visibleForm: action.payload,
-    //     };
-    //     case 'SET_VISIBLE_CONTENT_MATERI':
-    //       return {
-    //         ...state,
-    //         visibleContent: action.payload,
-    //       };
   
-    //     case 'SET_CURRENT_MATERI':
-    //       return {
-    //         ...state,
-    //         currentData: action.payload,
-    //       };
+        case 'SET_CURRENT_PLAYLIST':
+          return {
+            ...state,
+            currentData: action.payload,
+          };
       default:
         return state;
     }

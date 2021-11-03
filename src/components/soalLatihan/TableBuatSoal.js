@@ -25,12 +25,14 @@ function TableBuatSoal() {
   const [visibleSoal, setVisibleSoal] = useState('')
   const [currentSoal, setCurrentSoal] = useState('')
   const [title, setTitle] = useState('')
+  const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if(currentSoalLatihan) {
       console.log(currentSoalLatihan)
       setTitle(currentSoalLatihan.title)
+      setCode(currentSoalLatihan.code)
       dispatch(
         SetListQuestionForm(currentSoalLatihan.questions)
       )
@@ -48,12 +50,13 @@ function TableBuatSoal() {
   }
 
   const simpanSoal = () => {
-    console.log('simpan soal', title, listQuestionForm)
-
+    
     const payload = {
       title,
+      code,
       questions: listQuestionForm
     }
+    console.log('simpan soal', payload)
     
     setLoading(true)
     let url = '/soal-latihan'
@@ -134,7 +137,7 @@ function TableBuatSoal() {
       </div>
       <div className='w-6/12 px-10 flex items-center justify-center'>
           <Card>
-          <CardBody>
+          <CardBody className="space-y-10">
         <Input
           type='text'
           color='lightBlue'
@@ -143,6 +146,15 @@ function TableBuatSoal() {
           placeholder='Title'
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+        />
+         <Input
+          type='text'
+          color='lightBlue'
+          size='regular'
+          outline={false}
+          placeholder='Code'
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
         />
         <Button className="mt-10" onClick={simpanSoal}>
         {loading && <div className="animate-spin rounded-full  h-5 w-5 border-t-2 border-b-2 border-white-500"></div>}

@@ -3,7 +3,7 @@ import {CardHeader, NavbarInput, CardBody} from '@material-tailwind/react';
 
 
 export default function CardTable(props) {
-    const {title, columns, data, onSearch, searchValue,  visibleSearch} = props
+    const {title, columns, data, onSearch, searchValue,  visibleSearch, hideHeader} = props
 
     const headerHandler = (item, index) => {
         if (item.hide) {
@@ -58,6 +58,7 @@ export default function CardTable(props) {
 
     return (
         <Card>
+            {!hideHeader &&
             <CardHeader color="purple" contentPosition="between">
                 <div className="flex justify-between">
                 <h2 className="text-white text-2xl">{title}</h2>
@@ -71,6 +72,8 @@ export default function CardTable(props) {
                 </div>
                 </div>
             </CardHeader>
+            }
+
             <CardBody>
                 <div className="overflow-x-auto">
                     <table className="items-center w-full bg-transparent border-collapse">

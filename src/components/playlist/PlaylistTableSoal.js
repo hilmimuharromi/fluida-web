@@ -7,7 +7,7 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import ModalConfirmation from 'components/base/ModalConfirmation';
 import ModalPreview from '../editor/ModalPreview'
-import PreviewListQuestion from './PreviewListQuestion';
+import PreviewListQuestion from '../soalLatihan/PreviewListQuestion';
 import {
   GetListSoalLatihan,
   SetVisibleFormSoalLatihan,
@@ -16,7 +16,8 @@ import {
 } from 'stores/action/soalLatihanAction';
 
 
-function TableSoalLatihan() {
+function TableSoalLatihan(props) {
+    const {setItem} = props
   const history= useHistory()
   const dispatch = useDispatch()
   const [dataConfirm, setdataConfirm] = useState('');
@@ -74,46 +75,21 @@ function TableSoalLatihan() {
                 color='blueGray'
                 buttonType='filled'
                 onClick={() => {
-                  dispatch(SetCurrentSoalLatihan(item));
-                  history.push('/soal-latihan/form')
+                //   console.log('pilih soal', item)
+                let data = item
+                data.flag = 'soalLatihan'
+                setItem(data)
                 }}
               >
-                Edit
+                Pilih
               </Button>
-              <Button
-                color='pink'
-                buttonType='filled'
-                onClick={() => {
-                  setdataConfirm(item);
-                  setVisibleConfirm(true);
-                }}
-              >
-                Delete
-              </Button>
+             
             </div>
           ),
         },
       ];
 
-      const deleteSoalLatihan = () => {
-        setLoadingDelete(true);
-        axios(`${process.env.REACT_APP_API_URL}/soal-latihan/${dataConfirm._id}`, {
-          method: 'delete',
-          headers: {
-            token: user.token,
-          },
-        })
-          .then((response) => {
-            setVisibleConfirm(false);
-            dispatch(GetListSoalLatihan());
-          })
-          .catch((e) => {
-            console.log('error delete', e.message);
-          })
-          .finally(() => {
-            setLoadingDelete(false);
-          });
-      };
+     
 
 
     return (
@@ -124,7 +100,7 @@ function TableSoalLatihan() {
         data={dataConfirm}
         
         />
-      <ModalConfirmation
+      {/* <ModalConfirmation
         visible={visibleConfirm}
         setVisible={setVisibleConfirm}
         title={'Hapus Soal Latihan'}
@@ -132,8 +108,9 @@ function TableSoalLatihan() {
         titleButton='Hapus'
         onSave={deleteSoalLatihan}
         loading={loadingDelete}
-      />
+      /> */}
         <TableCard
+        hideHeader={true}
         title={"Tabel Soal Latihan"} 
         actionTitle="Buat Soal Latihan"
         columns={columns} 

@@ -36,7 +36,6 @@ export default function LoginCard() {
         }).finally(_ => {
         setLoading(false)
         })
-
     }
 
     return (

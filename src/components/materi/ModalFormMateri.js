@@ -15,20 +15,23 @@ function ModalFormMateri(props) {
     const current_id = materiState.currentData._id
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('')
+  const [code, setCode] = useState('')
+
   const [loading, setLoading] = useState(false)
   const user = useSelector(state => state.user.data)
   const dispatch = useDispatch()
 
   useEffect(() => {
       if(editData) {
-        console.log('masukkkk dong', editData)
           setTitle(editData.title)
           setContent(editData.content)
+          setCode(editData.code)
       }
 
        return(() => {
          setTitle('')
          setContent('')
+         setCode('')
        })
   }, [editData, current_id])
 
@@ -37,7 +40,8 @@ function ModalFormMateri(props) {
       if(!title || !content) return
       const payload = {
           title,
-          content
+          content,
+          code
       }
       setLoading(true)
       axios(`${process.env.REACT_APP_API_URL}/materi`, {
@@ -49,6 +53,7 @@ function ModalFormMateri(props) {
       }).then((res) => {
           setContent('')
           setTitle('')
+          setCode('')
           dispatch(GetListMateri())
            dispatch(SetVisibleFormMateri(false))
       }).catch((e) => {
@@ -63,7 +68,9 @@ function ModalFormMateri(props) {
       console.log('edit save', editData)
       const payload = {
         title,
-        content
+        content,
+        code
+
     }
     setLoading(true)
     axios(`${process.env.REACT_APP_API_URL}/materi/${editData._id}`, {
@@ -75,6 +82,7 @@ function ModalFormMateri(props) {
     }).then((res) => {
         setContent('')
         setTitle('')
+        setCode('')
         dispatch(GetListMateri())
          dispatch(SetVisibleFormMateri(false))
     }).catch((e) => {
@@ -112,9 +120,17 @@ function ModalFormMateri(props) {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
+          <Input
+            type='text'
+            color='lightBlue'
+            size='regular'
+            outline={false}
+            placeholder='Code'
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
           <Editor data={editData.content} setData={setContent} />
         </div>
-        {JSON.stringify(editData)}
       </ModalBase>
     </div>
   );

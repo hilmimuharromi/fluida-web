@@ -580,11 +580,11 @@ video {
 .-mt-28{
 	margin-top: -7rem;
 }
-.mt-14{
-	margin-top: 3.5rem;
-}
 .mb-10{
 	margin-bottom: 2.5rem;
+}
+.mt-14{
+	margin-top: 3.5rem;
 }
 .mt-1{
 	margin-top: 0.25rem;
@@ -765,10 +765,20 @@ video {
 .gap-4{
 	gap: 1rem;
 }
+.space-x-5 > :not([hidden]) ~ :not([hidden]){
+	--tw-space-x-reverse: 0;
+	margin-right: calc(1.25rem * var(--tw-space-x-reverse));
+	margin-left: calc(1.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
 .space-x-1 > :not([hidden]) ~ :not([hidden]){
 	--tw-space-x-reverse: 0;
 	margin-right: calc(0.25rem * var(--tw-space-x-reverse));
 	margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-y-10 > :not([hidden]) ~ :not([hidden]){
+	--tw-space-y-reverse: 0;
+	margin-top: calc(2.5rem * calc(1 - var(--tw-space-y-reverse)));
+	margin-bottom: calc(2.5rem * var(--tw-space-y-reverse));
 }
 .overflow-x-auto{
 	overflow-x: auto;

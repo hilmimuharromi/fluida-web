@@ -5,7 +5,7 @@ import Icon from '@material-tailwind/react/Icon';
 import Image from '@material-tailwind/react/Image';
 import Dropdown from '@material-tailwind/react/Dropdown';
 import DropdownItem from '@material-tailwind/react/DropdownItem';
-import ProfilePicture from 'assets/img/team-1-800x800.jpg';
+import ProfilePicture from 'assets/img/user.png';
 import { useDispatch, useSelector } from 'react-redux';
 import {SetUser} from 'stores/action/userAction'
 export default function AdminNavbar({ showSidebar, setShowSidebar }) {

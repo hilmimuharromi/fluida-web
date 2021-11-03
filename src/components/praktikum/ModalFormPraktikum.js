@@ -13,6 +13,7 @@ function ModalFormMateri() {
   const current_id = praktikumState.currentData._id;
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
+  const [code, setCode] = useState('')
   const [loading, setLoading] = useState(false)
   const user = useSelector(state => state.user.data)
 
@@ -20,11 +21,13 @@ function ModalFormMateri() {
     if (editData) {
       setTitle(editData.title);
       setContent(editData.content);
+      setCode(editData.code)
     }
 
     return () => {
       setTitle('');
       setContent('');
+      setCode('')
     };
   }, [editData, current_id]);
 
@@ -32,7 +35,7 @@ function ModalFormMateri() {
     if(!title || !content) return
     const payload = {
         title,
-        content
+        content, code
     }
     setLoading(true)
     axios(`${process.env.REACT_APP_API_URL}/praktikum`, {
@@ -44,6 +47,7 @@ function ModalFormMateri() {
     }).then((res) => {
         setContent('')
         setTitle('')
+        setCode('')
         dispatch(GetListPraktikum())
          dispatch(SetVisibleFormPraktikum(false))
     }).catch((e) => {
@@ -58,7 +62,8 @@ const editSave = () => {
     console.log('edit save', editData)
     const payload = {
       title,
-      content
+      content,
+      code
   }
   setLoading(true)
   axios(`${process.env.REACT_APP_API_URL}/praktikum/${editData._id}`, {
@@ -70,6 +75,7 @@ const editSave = () => {
   }).then((res) => {
       setContent('')
       setTitle('')
+      setCode('')
       dispatch(GetListPraktikum())
        dispatch(SetVisibleFormPraktikum(false))
   }).catch((e) => {
@@ -103,7 +109,17 @@ const editSave = () => {
             size='regular'
             outline={false}
             placeholder='Title'
+            value={title}
             onChange={(e) => setTitle(e.target.value)}
+          />
+          <Input
+            type='text'
+            color='lightBlue'
+            size='regular'
+            outline={false}
+            placeholder='Code'
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
           />
           <Editor data={editData.content} setData={setContent} />
         </div>

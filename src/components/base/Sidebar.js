@@ -89,7 +89,7 @@ export default function Sidebar() {
                                   Playlist
                                 </NavLink>
                             </li>
-                            <li className="rounded-lg mb-2 ">
+                            {/* <li className="rounded-lg mb-2 ">
                                 <NavLink
                                     to="/tables"
                                     className="flex items-center gap-4 text-sm text-gray-700 font-light px-4 py-3 rounded-lg"
@@ -98,7 +98,7 @@ export default function Sidebar() {
                                     <Icon name="toc" size="2xl" />
                                     Tables
                                 </NavLink>
-                            </li>
+                            </li> */}
                             {/* <li className="rounded-lg mb-2 text-gray-700">
                                 <NavLink
                                     to="/maps"

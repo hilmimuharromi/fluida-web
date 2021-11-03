@@ -1,5 +1,5 @@
 import TableCard from '../base/TableCard'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Button from '@material-tailwind/react/Button';
 
 import axios from 'axios';
@@ -8,14 +8,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import ModalConfirmation from 'components/base/ModalConfirmation';
 import ModalPreview from '../editor/ModalPreview'
 import {
-  GetListPraktikum,
-  SetVisibleFormPraktikum,
-  SetCurrentPraktikum,
-  SetVisibleContentPraktikum,
-} from 'stores/action/praktikumAction';
+  GetListTugasProyek,
+  SetVisibleFormTugasProyek,
+  SetCurrentTugasProyek,
+  SetVisibleContentTugasProyek,
+} from 'stores/action/tugasProyekAction';
 
 
-function TablePraktikum() {
+function TableTugas(props) {
+    const {setItem} = props
+
     const dispatch = useDispatch()
   const [dataConfirm, setdataConfirm] = useState('');
   const [visibleConfirm, setVisibleConfirm] = useState(false);
@@ -23,8 +25,8 @@ function TablePraktikum() {
   const [modalPreview, setModalPreview] = useState(false)
 
     const [filterData, setFilterData] = useState([]);
-    const listPraktikum = useSelector((state) => state.praktikum.data);
-    const currentPraktikum = useSelector((state) => state.praktikum.currentData)
+    const listTugasProyek = useSelector((state) => state.tugasProyek.data);
+    const currentTugasProyek = useSelector((state) => state.tugasProyek.currentData)
     const user = useSelector((state) => state.user.data);
     const [search, onSearch] = useState('')
   
@@ -43,7 +45,7 @@ function TablePraktikum() {
           render: (item) => (
             <Button
               onClick={() => {
-                dispatch(SetCurrentPraktikum(item));
+                dispatch(SetCurrentTugasProyek(item));
             setModalPreview(true)
                
               }}
@@ -72,77 +74,57 @@ function TablePraktikum() {
                 color='blueGray'
                 buttonType='filled'
                 onClick={() => {
-                  dispatch(SetCurrentPraktikum(item));
-                  dispatch(SetVisibleFormPraktikum(true));
+                    console.log('pilih', item)
+                    let data = item
+                    data.flag = 'tugasProyek'
+                    setItem(data)
+                //   dispatch(SetCurrentTugasProyek(item));
+                //   dispatch(SetVisibleFormTugasProyek(true));
                 }}
               >
-                Edit
-              </Button>
-              <Button
-                color='pink'
-                buttonType='filled'
-                onClick={() => {
-                  setdataConfirm(item);
-                  setVisibleConfirm(true);
-                }}
-              >
-                Delete
+                Pilih
               </Button>
             </div>
           ),
         },
       ];
 
-      const deletePraktikum = () => {
-        setLoadingDelete(true);
-        axios(`${process.env.REACT_APP_API_URL}/praktikum/${dataConfirm._id}`, {
-          method: 'delete',
-          headers: {
-            token: user.token,
-          },
-        })
-          .then((response) => {
-            setVisibleConfirm(false);
-            dispatch(GetListPraktikum());
-          })
-          .catch((e) => {
-            console.log('error delete', e.message);
-          })
-          .finally(() => {
-            setLoadingDelete(false);
-          });
-      };
 
+      useEffect(() => {
+         dispatch(GetListTugasProyek())
+      }, [])
 
     return (
         <>
         <ModalPreview visible={modalPreview} 
       setVisible={(data) => {
         setModalPreview(data)
-        dispatch(SetCurrentPraktikum(''));
+        dispatch(SetCurrentTugasProyek(''));
       }}
-      data={currentPraktikum}
+      data={currentTugasProyek}
       />
-      <ModalConfirmation
+      {/* <ModalConfirmation
         visible={visibleConfirm}
         setVisible={setVisibleConfirm}
-        title={'Hapus Praktikum'}
-        description='Anda Yakin akan menghapus Praktikum ini'
+        title={'Hapus Tugas Proyek'}
+        description='Anda Yakin akan menghapus Tugas Proyek ini'
         titleButton='Hapus'
-        onSave={deletePraktikum}
+        onSave={deleteTugasProyek}
         loading={loadingDelete}
-      />
+      /> */}
         <TableCard
-        title={"Tabel Praktikum"} 
-        actionTitle="New Praktikum"
+        hideHeader={true}
+        title={"Tabel Tugas Proyek"} 
+        actionTitle="New Tugas Proyek"
         columns={columns} 
-        data={listPraktikum}
+        data={listTugasProyek}
         searchValue={search}
         onSearch={(data)=> onSearch(data)}
         visibleSearch={true}
+
         />
         </>
     )
 }
 
-export default TablePraktikum
+export default TableTugas

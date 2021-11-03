@@ -2,27 +2,21 @@ import TableCard from '../base/TableCard';
 import React, { useState, useEffect } from 'react';
 import Button from '@material-tailwind/react/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import ModalConfirmation from 'components/base/ModalConfirmation';
 import ModalPreview from '../editor/ModalPreview';
-import axios from 'axios';
 import moment from 'moment';
 import {
   GetListMateri,
-  SetVisibleFormMateri,
-  SetVisibleContentMateri,
   SetCurrentMateri
 } from 'stores/action/materiAction';
 
 function TableMateri(props) {
+  const {setItem} = props
+
   const [search, onSearch] = useState('');
-  const [dataConfirm, setdataConfirm] = useState('');
-  const [loadingDelete, setLoadingDelete] = useState(false);
-  const [visibleConfirm, setVisibleConfirm] = useState(false);
   const [modalPreview, setModalPreview] = useState(false)
   const [filterData, setFilterData] = useState([]);
   const listMateri = useSelector((state) => state.materi.data);
   const currentMateri = useSelector((state) => state.materi.currentData)
-  const user = useSelector((state) => state.user.data);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,6 +28,10 @@ function TableMateri(props) {
       setFilterData(filterData);
     }
   }, [search, listMateri]);
+
+  useEffect(() => {
+  dispatch(GetListMateri())
+  }, [])
 
   const columns = [
     {
@@ -78,73 +76,39 @@ function TableMateri(props) {
             color='blueGray'
             buttonType='filled'
             onClick={() => {
-              dispatch(SetCurrentMateri(item));
-              dispatch(SetVisibleFormMateri(true));
+                console.log('dipilih', item)
+                let data = item
+                data.flag = 'materi'
+                setItem(data)
+            //   dispatch(SetCurrentMateri(item));
+            //   dispatch(SetVisibleFormMateri(true));
             }}
           >
-            Edit
-          </Button>
-          <Button
-            color='pink'
-            buttonType='filled'
-            onClick={() => {
-              setdataConfirm(item);
-              setVisibleConfirm(true);
-            }}
-          >
-            Delete
+            Pilih
           </Button>
         </div>
       ),
     },
   ];
 
-  const deleteMateri = () => {
-    setLoadingDelete(true);
-    axios(`${process.env.REACT_APP_API_URL}/materi/${dataConfirm._id}`, {
-      method: 'delete',
-      headers: {
-        token: user.token,
-      },
-    })
-      .then((response) => {
-        setVisibleConfirm(false);
-        dispatch(GetListMateri());
-      })
-      .catch((e) => {
-        console.log('error delete', e.message);
-      })
-      .finally(() => {
-        setLoadingDelete(false);
-      });
-  };
+ 
   return (
     <>
-      <ModalPreview visible={modalPreview} 
+    <ModalPreview visible={modalPreview} 
       setVisible={(data) => {
         setModalPreview(data)
         dispatch(SetCurrentMateri(''));
       }}
       data={currentMateri}
       />
-      <ModalConfirmation
-        visible={visibleConfirm}
-        setVisible={setVisibleConfirm}
-        title={'Hapus Materi'}
-        description='Anda Yakin akan menghapus materi ini'
-        titleButton='Hapus'
-        onSave={deleteMateri}
-        loading={loadingDelete}
-      />
       <TableCard
+      hideHeader={true}
         title={'Tabel Materi'}
-        actionTitle='New Materi'
         columns={columns}
         data={search ? filterData : listMateri}
         searchValue={search}
         onSearch={(data) => onSearch(data)}
         visibleSearch={true}
-
       />
     </>
   );

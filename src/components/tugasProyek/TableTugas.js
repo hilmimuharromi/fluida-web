@@ -34,6 +34,10 @@ function TableTugas() {
           key: 'title',
         },
         {
+          title: 'Code',
+          key: 'code',
+        },
+        {
           title: 'Content',
           key: 'content',
           render: (item) => (
