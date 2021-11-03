@@ -31,6 +31,7 @@ function TableMateri(props) {
 
   useEffect(() => {
   dispatch(GetListMateri())
+         //eslint-disable-next-line
   }, [])
 
   const columns = [

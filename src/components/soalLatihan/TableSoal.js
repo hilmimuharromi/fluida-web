@@ -1,18 +1,17 @@
 import TableCard from '../base/TableCard'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Button from '@material-tailwind/react/Button';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import ModalConfirmation from 'components/base/ModalConfirmation';
-import ModalPreview from '../editor/ModalPreview'
+// import ModalPreview from '../editor/ModalPreview'
 import PreviewListQuestion from './PreviewListQuestion';
 import {
   GetListSoalLatihan,
-  SetVisibleFormSoalLatihan,
+
   SetCurrentSoalLatihan,
-  SetVisibleContentSoalLatihan,
 } from 'stores/action/soalLatihanAction';
 
 
@@ -26,9 +25,19 @@ function TableSoalLatihan() {
 
     const [filterData, setFilterData] = useState([]);
     const listSoalLatihan = useSelector((state) => state.soalLatihan.data);
-    const currentSoalLatihan = useSelector((state) => state.soalLatihan.currentData)
+    // const currentSoalLatihan = useSelector((state) => state.soalLatihan.currentData)
     const user = useSelector((state) => state.user.data);
     const [search, onSearch] = useState('')
+
+    useEffect(() => {
+      if (search) {
+        let searchFormat = search.toLowerCase();
+        const filterData = listSoalLatihan.filter((item) =>
+          item.title.toLowerCase().includes(searchFormat)
+        );
+        setFilterData(filterData);
+      }
+    }, [search, listSoalLatihan]);
   
     const columns = [
         {
@@ -137,7 +146,7 @@ function TableSoalLatihan() {
         title={"Tabel Soal Latihan"} 
         actionTitle="Buat Soal Latihan"
         columns={columns} 
-        data={listSoalLatihan}
+        data={search ? filterData : listSoalLatihan}
         searchValue={search}
         onSearch={(data)=> onSearch(data)}
         visibleSearch={true}

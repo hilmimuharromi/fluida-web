@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ModalBase from 'components/base/Modal';
-import { Button, Input } from '@material-tailwind/react';
 import TableCard from '../base/TableCard';
 
 function ModalContents({ data, visible, setVisible }) {

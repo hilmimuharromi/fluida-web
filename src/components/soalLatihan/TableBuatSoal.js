@@ -37,6 +37,7 @@ function TableBuatSoal() {
         SetListQuestionForm(currentSoalLatihan.questions)
       )
     }
+    //eslint-disable-next-line
   }, [currentSoalLatihan])
 
 

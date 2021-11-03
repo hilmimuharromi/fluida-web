@@ -9,7 +9,6 @@ import moment from 'moment';
 import {
   GetListMateri,
   SetVisibleFormMateri,
-  SetVisibleContentMateri,
   SetCurrentMateri
 } from 'stores/action/materiAction';
 

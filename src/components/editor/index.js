@@ -35,6 +35,7 @@ function EditorContainer(props) {
             setEditorState(EditorState.createEmpty())
             resetEditor(false)
         }
+         //eslint-disable-next-line
     }, [isReset])
 
     function uploadImageCallBack(file) {

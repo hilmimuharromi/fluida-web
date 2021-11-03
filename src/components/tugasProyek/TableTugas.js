@@ -1,5 +1,5 @@
 import TableCard from '../base/TableCard'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Button from '@material-tailwind/react/Button';
 
 import axios from 'axios';
@@ -11,7 +11,6 @@ import {
   GetListTugasProyek,
   SetVisibleFormTugasProyek,
   SetCurrentTugasProyek,
-  SetVisibleContentTugasProyek,
 } from 'stores/action/tugasProyekAction';
 
 
@@ -27,6 +26,16 @@ function TableTugas() {
     const currentTugasProyek = useSelector((state) => state.tugasProyek.currentData)
     const user = useSelector((state) => state.user.data);
     const [search, onSearch] = useState('')
+
+    useEffect(() => {
+      if (search) {
+        let searchFormat = search.toLowerCase();
+        const filterData = listTugasProyek.filter((item) =>
+          item.title.toLowerCase().includes(searchFormat)
+        );
+        setFilterData(filterData);
+      }
+    }, [search, listTugasProyek]);
   
     const columns = [
         {
@@ -136,11 +145,10 @@ function TableTugas() {
         title={"Tabel Tugas Proyek"} 
         actionTitle="New Tugas Proyek"
         columns={columns} 
-        data={listTugasProyek}
+        data={search ? filterData : listTugasProyek}
         searchValue={search}
         onSearch={(data)=> onSearch(data)}
         visibleSearch={true}
-
         />
         </>
     )

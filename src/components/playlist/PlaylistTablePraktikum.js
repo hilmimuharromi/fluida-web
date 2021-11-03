@@ -2,10 +2,8 @@ import TableCard from '../base/TableCard'
 import React, {useState, useEffect} from 'react'
 import Button from '@material-tailwind/react/Button';
 
-import axios from 'axios';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
-// import ModalConfirmation from 'components/base/ModalConfirmation';
 import ModalPreview from '../editor/ModalPreview'
 import {
   GetListPraktikum,
@@ -19,7 +17,6 @@ function TablePraktikum(props) {
     const dispatch = useDispatch()
   const [modalPreview, setModalPreview] = useState(false)
 
-    const [filterData, setFilterData] = useState([]);
     const listPraktikum = useSelector((state) => state.praktikum.data);
     const currentPraktikum = useSelector((state) => state.praktikum.currentData)
     const [search, onSearch] = useState('')
@@ -85,6 +82,7 @@ function TablePraktikum(props) {
 
       useEffect(() => {
          dispatch(GetListPraktikum())
+         //eslint-disable-next-line
       }, [])
 
       

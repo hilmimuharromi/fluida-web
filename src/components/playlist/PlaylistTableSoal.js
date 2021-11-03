@@ -1,34 +1,17 @@
 import TableCard from '../base/TableCard'
 import React, {useState} from 'react'
 import Button from '@material-tailwind/react/Button';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 import moment from 'moment';
-import { useSelector, useDispatch } from 'react-redux';
-import ModalConfirmation from 'components/base/ModalConfirmation';
-import ModalPreview from '../editor/ModalPreview'
+import { useSelector } from 'react-redux';
 import PreviewListQuestion from '../soalLatihan/PreviewListQuestion';
-import {
-  GetListSoalLatihan,
-  SetVisibleFormSoalLatihan,
-  SetCurrentSoalLatihan,
-  SetVisibleContentSoalLatihan,
-} from 'stores/action/soalLatihanAction';
 
 
 function TableSoalLatihan(props) {
     const {setItem} = props
-  const history= useHistory()
-  const dispatch = useDispatch()
   const [dataConfirm, setdataConfirm] = useState('');
-  const [visibleConfirm, setVisibleConfirm] = useState(false);
-  const [loadingDelete, setLoadingDelete] = useState(false);
   const [modalPreview, setModalPreview] = useState(false)
-
-    const [filterData, setFilterData] = useState([]);
     const listSoalLatihan = useSelector((state) => state.soalLatihan.data);
-    const currentSoalLatihan = useSelector((state) => state.soalLatihan.currentData)
-    const user = useSelector((state) => state.user.data);
+  
     const [search, onSearch] = useState('')
   
     const columns = [

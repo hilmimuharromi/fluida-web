@@ -1,5 +1,5 @@
 import TableCard from '../base/TableCard'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Button from '@material-tailwind/react/Button';
 
 import axios from 'axios';
@@ -11,7 +11,6 @@ import {
   GetListPraktikum,
   SetVisibleFormPraktikum,
   SetCurrentPraktikum,
-  SetVisibleContentPraktikum,
 } from 'stores/action/praktikumAction';
 
 
@@ -27,6 +26,16 @@ function TablePraktikum() {
     const currentPraktikum = useSelector((state) => state.praktikum.currentData)
     const user = useSelector((state) => state.user.data);
     const [search, onSearch] = useState('')
+
+    useEffect(() => {
+      if (search) {
+        let searchFormat = search.toLowerCase();
+        const filterData = listPraktikum.filter((item) =>
+          item.title.toLowerCase().includes(searchFormat)
+        );
+        setFilterData(filterData);
+      }
+    }, [search, listPraktikum]);
   
     const columns = [
         {
@@ -136,7 +145,7 @@ function TablePraktikum() {
         title={"Tabel Praktikum"} 
         actionTitle="New Praktikum"
         columns={columns} 
-        data={listPraktikum}
+        data={search ? filterData : listPraktikum}
         searchValue={search}
         onSearch={(data)=> onSearch(data)}
         visibleSearch={true}

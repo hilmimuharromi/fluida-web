@@ -151,7 +151,9 @@ function PlaylistForm() {
           </div>
           <div className='flex space-x-5'>
             <Button onClick={() => setVisibleModal(true)}>Add Item</Button>
-            <Button onClick={saveData}>Save</Button>
+            <Button onClick={saveData}>
+            {loading && <div className="animate-spin rounded-full  h-5 w-5 border-t-2 border-b-2 border-white-500"></div>}
+              Save</Button>
           </div>
         </div>
       </div>

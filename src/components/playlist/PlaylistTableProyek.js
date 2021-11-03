@@ -1,17 +1,12 @@
 import TableCard from '../base/TableCard'
 import React, {useState, useEffect} from 'react'
 import Button from '@material-tailwind/react/Button';
-
-import axios from 'axios';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
-import ModalConfirmation from 'components/base/ModalConfirmation';
 import ModalPreview from '../editor/ModalPreview'
 import {
   GetListTugasProyek,
-  SetVisibleFormTugasProyek,
   SetCurrentTugasProyek,
-  SetVisibleContentTugasProyek,
 } from 'stores/action/tugasProyekAction';
 
 
@@ -19,15 +14,11 @@ function TableTugas(props) {
     const {setItem} = props
 
     const dispatch = useDispatch()
-  const [dataConfirm, setdataConfirm] = useState('');
-  const [visibleConfirm, setVisibleConfirm] = useState(false);
-  const [loadingDelete, setLoadingDelete] = useState(false);
+ 
   const [modalPreview, setModalPreview] = useState(false)
 
-    const [filterData, setFilterData] = useState([]);
     const listTugasProyek = useSelector((state) => state.tugasProyek.data);
     const currentTugasProyek = useSelector((state) => state.tugasProyek.currentData)
-    const user = useSelector((state) => state.user.data);
     const [search, onSearch] = useState('')
   
     const columns = [
@@ -92,6 +83,7 @@ function TableTugas(props) {
 
       useEffect(() => {
          dispatch(GetListTugasProyek())
+         //eslint-disable-next-line
       }, [])
 
     return (

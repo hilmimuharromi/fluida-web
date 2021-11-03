@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import ModalBase from 'components/base/Modal';
 import {
   Button,
-  Input,
   Card,
   CardBody,
   CardRow,
@@ -11,14 +10,11 @@ import H6 from '@material-tailwind/react/Heading6';
 
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  GetListSoalLatihan,
   SetListQuestionForm,
   SetVisibleFormSoalLatihan,
   SetCurrentQuestionForm,
 } from 'stores/action/soalLatihanAction';
-import axios from 'axios';
 import CardOptions from './CardOptions';
-import { useHistory } from 'react-router-dom';
 import Editor from '../editor';
 
 const optionsDefault = [
@@ -49,11 +45,7 @@ function ModalFormMateri() {
   const soalLatihanState = useSelector((state) => state.soalLatihan);
   const listQuestionForm = soalLatihanState.listQuestionForm;
   const currentQuestionForm = soalLatihanState.currentQuestionForm;
-
   const visible = soalLatihanState.visibleForm;
-  const [loading, setLoading] = useState(false);
-  const user = useSelector((state) => state.user.data);
-
   const [question, setQuestion] = useState('');
   const [key, setKey] = useState(listQuestionForm.length + 1);
   const [options, setOptions] = useState(optionsDefault);
@@ -68,6 +60,7 @@ function ModalFormMateri() {
       setQuestion('<p></p>');
       setOptions(optionsDefault);
     }
+    //eslint-disable-next-line
   }, [currentQuestionForm]);
 
   useEffect(() => {
@@ -75,6 +68,7 @@ function ModalFormMateri() {
       let key = listQuestionForm.length === 0 ? 1 : listQuestionForm.length + 1;
       setKey(key);
     }
+    //eslint-disable-next-line
   }, [currentQuestionForm]);
 
   const tambahSoal = () => {
@@ -120,7 +114,6 @@ function ModalFormMateri() {
         setVisible={(data) => dispatch(SetVisibleFormSoalLatihan(data))}
         onSave={tambahSoal}
         titleButton='Tambah Soal'
-        loading={loading}
       >
         <div className='w-full space-x-1'>
           <Card className='mt-10'>
