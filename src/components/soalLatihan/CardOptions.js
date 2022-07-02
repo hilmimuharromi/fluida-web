@@ -6,7 +6,7 @@ import {
   Checkbox,
 } from '@material-tailwind/react';
 export default function CardSoal(props) {
-  const { options, setOptions, disabled} = props;
+  const { options, setOptions, disabled, answer,  keyQuestion} = props;
 
   const onChangeStatus = (data, key) => {
     const newOptions = options.map((item) => {
@@ -30,6 +30,16 @@ export default function CardSoal(props) {
     setOptions(newOptions);
   };
 
+  const getAnswer  = (item) => {
+    const isFound = answer.find((a) => a.key === keyQuestion)
+    console.log(isFound, item)
+    if(isFound && item.key === isFound.option) {
+      return true
+    }  else {
+      return  false
+    }
+  }
+
   return (
       <CardFooter>
         {options &&
@@ -49,14 +59,28 @@ export default function CardSoal(props) {
               </div>
               <Checkbox
                 disabled={disabled}
-
                 value={true}
                 onChange={(e) => onChangeStatus(e.target.value, item.key)}
                 checked={item.isTrue}
                 color='lightBlue'
-                text='Benar'
+                text='benar'
+                className=""
                 id={`checkbox-${item.key}`}
               />
+              {
+                answer  && answer.length > 0 &&
+                <div className='flex h-100 ml-5'>
+                  <Checkbox
+                   disabled={disabled}
+                   value={true}
+                   onChange={(e) => onChangeStatus(e.target.value, item.key)}
+                   checked={getAnswer(item)}
+                   color='lightBlue'
+                   text='jawaban user'
+                   id={`checkbox-${item.key}`}
+                 />
+                </div>
+              }
             </CardRow>
           ))}
       </CardFooter>

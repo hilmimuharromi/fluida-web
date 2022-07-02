@@ -1,5 +1,6 @@
 const initialState = {
     data: [],
+    result:[],
     listQuestionForm: [],
     currentQuestionForm: '',
     visibleForm: false,
@@ -14,6 +15,11 @@ const initialState = {
           ...state,
           data: action.payload,
         };
+        case 'SET_RESULT_SOAL_LATIHAN':
+          return {
+            ...state,
+            result: action.payload,
+          };
   
       case 'SET_VISIBLE_FORM_SOAL_LATIHAN':
         return {

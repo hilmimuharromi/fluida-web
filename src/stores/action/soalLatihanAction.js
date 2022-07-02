@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import {store} from "../index"
 const GetListSoalLatihan =  () => {
     return async(dispatch) => {
         const {data, status} = await axios(`${process.env.REACT_APP_API_URL}/soal-latihan`)
@@ -9,10 +9,36 @@ const GetListSoalLatihan =  () => {
     }
 }
 
+const GetResultSoalLatihan =  (soalId) => {
+    console.log("store ==>",  store.getState())
+    const state = store.getState()
+    return async(dispatch) => {
+        const {data, status} = await axios({
+            url: `${process.env.REACT_APP_API_URL}/penilaian/soal/${soalId}`,
+            method: "GET",
+            headers:  {
+                token: state.user.data.token
+            }
+        })
+    console.log("result==>",  data, status)
+
+        if(status) {
+            dispatch(SetResultSoalLatihan(data.data))
+        }
+    }
+}
+
 const SetSoalLatihan = (data) => {
     console.log('soal latihan ===>', data)
     return {
         type: 'SET_SOAL_LATIHAN', payload: data
+    };
+}
+
+const SetResultSoalLatihan = (data) => {
+    console.log('result soal latihan ===>', data)
+    return {
+        type: 'SET_RESULT_SOAL_LATIHAN', payload: data
     };
 }
 const SetLoading = (data) => {
@@ -52,8 +78,11 @@ const SetCurrentQuestionForm = (data) =>  {
 }
 
 
+
+
 export {
     GetListSoalLatihan,
+    GetResultSoalLatihan ,
     SetSoalLatihan,
     SetLoading,
     SetCurrentSoalLatihan,

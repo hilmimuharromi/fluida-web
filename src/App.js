@@ -12,6 +12,7 @@ import Register from 'pages/Register';
 import BuatSoal from 'pages/BuatSoal';
 import Playlist from 'pages/Playlist';
 import PlaylistForm from 'pages/PlaylistForm';
+import ResultSoalLatihan from 'pages/ResultSoalLatihan';
 // Tailwind CSS Style Sheet
 import 'assets/styles/tailwind.css';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
@@ -40,14 +41,14 @@ const Routes = () => {
           <Route exact path='/praktikum' component={Praktikum} />
           <Route exact path='/playlist' component={Playlist} />
           <Route exact path='/playlist/form' component={PlaylistForm} />
-
-
           <Route exact path='/tugas-proyek' component={TugasProyek} />
           <Route exact path='/soal-latihan' component={SoalLatihan} />
           <Route exact path='/soal-latihan/form' component={BuatSoal} />
+          <Route exact path='/soal-latihan/penilaian/:soalId' component={ResultSoalLatihan} />
+
           <Redirect from='*' to='/' />
         </Switch>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   ) : (

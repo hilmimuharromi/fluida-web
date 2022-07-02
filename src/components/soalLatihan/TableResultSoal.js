@@ -1,7 +1,6 @@
 import TableCard from '../base/TableCard'
 import React, {useState, useEffect} from 'react'
 import Button from '@material-tailwind/react/Button';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,65 +8,46 @@ import ModalConfirmation from 'components/base/ModalConfirmation';
 // import ModalPreview from '../editor/ModalPreview'
 import PreviewListQuestion from './PreviewListQuestion';
 import {
-  GetListSoalLatihan,
-
-  SetCurrentSoalLatihan,
+  GetResultSoalLatihan
 } from 'stores/action/soalLatihanAction';
+import {useParams} from "react-router-dom"
 
 
-function TableSoalLatihan() {
-  const history= useHistory()
+
+function TableResultSoal() {
   const dispatch = useDispatch()
+  const params = useParams()
   const [dataConfirm, setdataConfirm] = useState('');
+  const [userAnswer, setUserAnswer] = useState([])
   const [visibleConfirm, setVisibleConfirm] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [modalPreview, setModalPreview] = useState(false)
+  const [dataDelete, setDataDelete] = useState()
 
     const [filterData, setFilterData] = useState([]);
-    const listSoalLatihan = useSelector((state) => state.soalLatihan.data);
-    // const currentSoalLatihan = useSelector((state) => state.soalLatihan.currentData)
+    const listResultSoal = useSelector((state) => state.soalLatihan.result);
     const user = useSelector((state) => state.user.data);
     const [search, onSearch] = useState('')
 
     useEffect(() => {
       if (search) {
         let searchFormat = search.toLowerCase();
-        const filterData = listSoalLatihan.filter((item) =>
-          item.title.toLowerCase().includes(searchFormat)
+        const filterData = listResultSoal.filter((item) =>
+          item.user.name.toLowerCase().includes(searchFormat)
         );
         setFilterData(filterData);
       }
-    }, [search, listSoalLatihan]);
+    }, [search, listResultSoal]);
   
     const columns = [
         {
-          title: 'Title',
-          key: 'title',
+          title: 'Nama Murid',
+          key: 'user.name',
         },
         {
-          title: 'Code',
-          key: 'code',
-        },
-        {
-          title: 'Questions',
-          key: 'questions',
-          render: (item) => (
-            <Button
-              onClick={() => {
-                console.log('item =>', item)
-                setdataConfirm(item)
-            setModalPreview(true)
-               
-              }}
-            >
-              View Questions
-            </Button>
-          ),
-        },
-        {
-          title: 'Created By',
-          key: 'user.email',
-        },
+            title: 'Email',
+            key: 'user.email',
+          },
         {
           title: 'Created Date',
           key: 'createdAt',
@@ -84,31 +64,23 @@ function TableSoalLatihan() {
                 color='blueGray'
                 buttonType='filled'
                 onClick={() => {
-                  dispatch(SetCurrentSoalLatihan(item));
-                  history.push(`/soal-latihan/penilaian/${item._id}`)
+                console.log('item =>', item)
+                setUserAnswer(item.answer)
+                    setdataConfirm(item.soal)
+                        setModalPreview(true)
                 }}
               >
-                Penilaian
-              </Button>
-              <Button
-                color='blueGray'
-                buttonType='filled'
-                onClick={() => {
-                  dispatch(SetCurrentSoalLatihan(item));
-                  history.push('/soal-latihan/form')
-                }}
-              >
-                Edit
+                Lihat Jawaban
               </Button>
               <Button
                 color='pink'
                 buttonType='filled'
                 onClick={() => {
-                  setdataConfirm(item);
+                  setDataDelete(item);
                   setVisibleConfirm(true);
                 }}
               >
-                Delete
+               Hapus
               </Button>
             </div>
           ),
@@ -117,7 +89,7 @@ function TableSoalLatihan() {
 
       const deleteSoalLatihan = () => {
         setLoadingDelete(true);
-        axios(`${process.env.REACT_APP_API_URL}/soal-latihan/${dataConfirm._id}`, {
+        axios(`${process.env.REACT_APP_API_URL}/penilaian/soal/${dataDelete._id}`, {
           method: 'delete',
           headers: {
             token: user.token,
@@ -125,7 +97,7 @@ function TableSoalLatihan() {
         })
           .then((response) => {
             setVisibleConfirm(false);
-            dispatch(GetListSoalLatihan());
+            dispatch(GetResultSoalLatihan(params.soalId));
           })
           .catch((e) => {
             console.log('error delete', e.message);
@@ -142,22 +114,23 @@ function TableSoalLatihan() {
         visible={modalPreview}
         setVisible={setModalPreview}
         data={dataConfirm}
+        answer={userAnswer}
         
         />
       <ModalConfirmation
         visible={visibleConfirm}
         setVisible={setVisibleConfirm}
-        title={'Hapus Soal Latihan'}
-        description='Anda Yakin akan menghapus Soal Latihan ini'
+        title={'Hapus Jawaban Soal Latihan'}
+        description='Anda Yakin akan menghapus jawaban user Soal Latihan ini'
         titleButton='Hapus'
         onSave={deleteSoalLatihan}
         loading={loadingDelete}
       />
         <TableCard
-        title={"Tabel Soal Latihan"} 
-        actionTitle="Buat Soal Latihan"
+        title={"Tabel Penilaian Soal Latihan"} 
+        // actionTitle="Buat Soal Latihan"
         columns={columns} 
-        data={search ? filterData : listSoalLatihan}
+        data={search ? filterData : listResultSoal}
         searchValue={search}
         onSearch={(data)=> onSearch(data)}
         visibleSearch={true}
@@ -167,4 +140,4 @@ function TableSoalLatihan() {
     )
 }
 
-export default TableSoalLatihan
+export default TableResultSoal
