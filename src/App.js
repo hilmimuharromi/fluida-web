@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import Sidebar from 'components/base/Sidebar';
 import Dashboard from 'pages/Dashboard';
-import Footer from 'components/base/Footer';
+// import Footer from 'components/base/Footer';
 import Materi from 'pages/Materi';
 import Praktikum from 'pages/Praktikum';
 import SoalLatihan from 'pages/SoalLatihan';

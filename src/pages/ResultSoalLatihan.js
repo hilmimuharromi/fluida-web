@@ -10,7 +10,7 @@ function ResultSoalLatihan() {
   useEffect(() => {
     console.log(params)
     dispatch(GetResultSoalLatihan(params.soalId))
-
+         //eslint-disable-next-line
   },[])
   return (
     <div className=' md:px-8 min-h-screen mt-10'>
