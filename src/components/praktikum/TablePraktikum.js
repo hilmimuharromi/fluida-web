@@ -6,16 +6,17 @@ import axios from 'axios';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import ModalConfirmation from 'components/base/ModalConfirmation';
-import ModalPreview from '../editor/ModalPreview'
+import PreviewListQuestions from "./PreviewListQuestions";
 import {
   GetListPraktikum,
-  SetVisibleFormPraktikum,
   SetCurrentPraktikum,
 } from 'stores/action/praktikumAction';
+import {useHistory} from "react-router-dom";
 
 
 function TablePraktikum() {
     const dispatch = useDispatch()
+    const history = useHistory()
   const [dataConfirm, setdataConfirm] = useState('');
   const [visibleConfirm, setVisibleConfirm] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -36,7 +37,7 @@ function TablePraktikum() {
         setFilterData(filterData);
       }
     }, [search, listPraktikum]);
-  
+
     const columns = [
         {
           title: 'Title',
@@ -54,7 +55,7 @@ function TablePraktikum() {
               onClick={() => {
                 dispatch(SetCurrentPraktikum(item));
             setModalPreview(true)
-               
+
               }}
             >
               View Content
@@ -82,7 +83,7 @@ function TablePraktikum() {
                 buttonType='filled'
                 onClick={() => {
                   dispatch(SetCurrentPraktikum(item));
-                  dispatch(SetVisibleFormPraktikum(true));
+                    history.push('/praktikum/form')
                 }}
               >
                 Edit
@@ -125,13 +126,14 @@ function TablePraktikum() {
 
     return (
         <>
-        <ModalPreview visible={modalPreview} 
-      setVisible={(data) => {
-        setModalPreview(data)
-        dispatch(SetCurrentPraktikum(''));
-      }}
-      data={currentPraktikum}
-      />
+            <PreviewListQuestions
+                visible={modalPreview}
+                setVisible={(data) => {
+                    setModalPreview(data)
+                    dispatch(SetCurrentPraktikum(''));
+                }}
+                data={currentPraktikum}
+            />
       <ModalConfirmation
         visible={visibleConfirm}
         setVisible={setVisibleConfirm}
@@ -142,9 +144,9 @@ function TablePraktikum() {
         loading={loadingDelete}
       />
         <TableCard
-        title={"Tabel Praktikum"} 
+        title={"Tabel Praktikum"}
         actionTitle="New Praktikum"
-        columns={columns} 
+        columns={columns}
         data={search ? filterData : listPraktikum}
         searchValue={search}
         onSearch={(data)=> onSearch(data)}

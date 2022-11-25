@@ -5,6 +5,7 @@ import Dashboard from 'pages/Dashboard';
 // import Footer from 'components/base/Footer';
 import Materi from 'pages/Materi';
 import Praktikum from 'pages/Praktikum';
+import BuatPraktikum from "pages/BuatPraktikum";
 import SoalLatihan from 'pages/SoalLatihan';
 import TugasProyek from 'pages/TugasProyek';
 import Login from 'pages/Login';
@@ -39,6 +40,7 @@ const Routes = () => {
           {/* <Route exact path="/maps" component={Maps} /> */}
           <Route exact path='/materi' component={Materi} />
           <Route exact path='/praktikum' component={Praktikum} />
+            <Route exact path='/praktikum/form' component={BuatPraktikum} />
           <Route exact path='/playlist' component={Playlist} />
           <Route exact path='/playlist/form' component={PlaylistForm} />
           <Route exact path='/tugas-proyek' component={TugasProyek} />

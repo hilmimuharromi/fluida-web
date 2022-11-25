@@ -25,18 +25,29 @@ const SetCurrentPraktikum = (data) => {
     };
 }
 
+const SetQuestionsFormPraktikum = (data) => {
+    return {
+        type: 'SET_LIST_QUESTION_FORM_PRAKTIKUM', payload: data
+    };
+}
+
+
 const SetVisibleFormPraktikum = (data) => {
     return {
         type: 'SET_VISIBLE_FORM_PRAKTIKUM', payload: data
     };
+}
 
+const SetCurrentQuestionForm = (data) => {
+    return {
+        type: 'SET_CURRENT_QUESTION_FORM', payload: data
+    };
 }
 
 const SetVisibleContentPraktikum = (data) => {
     return {
         type: 'SET_VISIBLE_CONTENT_PRAKTIKUM', payload: data
     };
-
 }
 
 
@@ -46,5 +57,7 @@ export {
     SetLoading,
     SetCurrentPraktikum,
     SetVisibleFormPraktikum,
-    SetVisibleContentPraktikum
+    SetVisibleContentPraktikum,
+    SetQuestionsFormPraktikum,
+    SetCurrentQuestionForm
 }

@@ -13,8 +13,8 @@ const initialState = {
           ...state,
           data: action.payload,
         };
-  
-  
+
+
         case 'SET_CURRENT_PLAYLIST':
           return {
             ...state,
@@ -25,4 +25,3 @@ const initialState = {
     }
   };
   export default PlaylistState;
-  

@@ -1,131 +1,115 @@
 import React, { useState, useEffect } from 'react';
 import ModalBase from 'components/base/Modal';
-import { Button, Input } from '@material-tailwind/react';
-import Editor from '../editor';
+import {
+    Button,
+    Card,
+    CardBody,
+    CardRow,
+} from '@material-tailwind/react';
+import H6 from '@material-tailwind/react/Heading6';
+
 import { useSelector, useDispatch } from 'react-redux';
-import { GetListPraktikum, SetVisibleFormPraktikum } from 'stores/action/praktikumAction';
-import axios from 'axios'
-function ModalFormMateri() {
-  const dispatch = useDispatch();
-  const praktikumState = useSelector((state) => state.praktikum);
-  const visible = praktikumState.visibleForm;
-  const editData = praktikumState.currentData;
-  const current_id = praktikumState.currentData._id;
-  const [content, setContent] = useState('');
-  const [title, setTitle] = useState('');
-  const [code, setCode] = useState('')
-  const [loading, setLoading] = useState(false)
-  const user = useSelector(state => state.user.data)
+import {
+    SetVisibleFormPraktikum,
+    SetCurrentQuestionForm,
+    SetQuestionsFormPraktikum
+} from 'stores/action/praktikumAction';
+import Editor from '../editor';
 
-  useEffect(() => {
-    if (editData) {
-      setTitle(editData.title);
-      setContent(editData.content);
-      setCode(editData.code)
-    }
 
-    return () => {
-      setTitle('');
-      setContent('');
-      setCode('')
-    };
-  }, [editData, current_id]);
+function ModalFormPraktikum() {
+    const dispatch = useDispatch();
+    const praktikumState = useSelector((state) => state.praktikum);
+    const listQuestionForm = praktikumState.listQuestionForm;
+    const currentQuestionForm = praktikumState.currentQuestionForm;
+    const visible = praktikumState.visibleForm;
+    const [question, setQuestion] = useState('');
+    const [key, setKey] = useState(listQuestionForm.length + 1);
+    const [emptyEditor, setEmptyEditor] = useState(false);
 
-  const onSave = () => {
-    if(!title || !content) return
-    const payload = {
-        title,
-        content, code
-    }
-    setLoading(true)
-    axios(`${process.env.REACT_APP_API_URL}/praktikum`, {
-        method: 'post',
-        data: payload,
-        headers: {
-            token: user.token
+    useEffect(() => {
+        if (currentQuestionForm) {
+            setQuestion(currentQuestionForm.question);
+            setKey(currentQuestionForm.key);
+        } else {
+            setQuestion('<p></p>');
         }
-    }).then((res) => {
-        setContent('')
-        setTitle('')
-        setCode('')
-        dispatch(GetListPraktikum())
-         dispatch(SetVisibleFormPraktikum(false))
-    }).catch((e) => {
-        console.log('error simpan praktikum')
-    }).finally(_ => {
-      setLoading(false)
+        //eslint-disable-next-line
+    }, [currentQuestionForm]);
 
-    })
-};
+    useEffect(() => {
+        if (!currentQuestionForm) {
+            let key = listQuestionForm.length === 0 ? 1 : listQuestionForm.length + 1;
+            setKey(key);
+        }
+        //eslint-disable-next-line
+    }, [currentQuestionForm]);
 
-const editSave = () => {
-    console.log('edit save', editData)
-    const payload = {
-      title,
-      content,
-      code
-  }
-  setLoading(true)
-  axios(`${process.env.REACT_APP_API_URL}/praktikum/${editData._id}`, {
-      method: 'put',
-      data: payload,
-      headers: {
-          token: user.token
-      }
-  }).then((res) => {
-      setContent('')
-      setTitle('')
-      setCode('')
-      dispatch(GetListPraktikum())
-       dispatch(SetVisibleFormPraktikum(false))
-  }).catch((e) => {
-      console.log('error simpan praktikum')
-  }).finally(_ => {
-    setLoading(false)
+    const tambahSoal = () => {
+        const payload = {
+            key: listQuestionForm.length === 0 ? 1 : listQuestionForm.length + 1,
+            question,
+        };
+        console.log('payload', payload)
+        if (listQuestionForm.length === 0) {
+            dispatch(SetQuestionsFormPraktikum([payload]));
+        } else if (currentQuestionForm) {
+            const newData = listQuestionForm.map((item) => {
+                if (item.key === key) {
+                    payload.key = key
+                    item = payload;
+                }
+                return item;
+            });
+            dispatch(SetQuestionsFormPraktikum(newData));
+        } else {
+            const NewData = [...listQuestionForm, payload];
+            dispatch(SetQuestionsFormPraktikum(NewData));
+        }
+        dispatch(SetVisibleFormPraktikum(false));
+        setQuestion('');
+        setKey('');
+    };
 
-  })
-}
-
-  return (
-    <div className='flex justify-end px-4'>
-      <Button
-        className='mb-10'
-        onClick={() => dispatch(SetVisibleFormPraktikum(true))}
-       
-      >
-        New Praktikum
-      </Button>
-      <ModalBase
-        visible={visible}
-        setVisible={(data) => dispatch(SetVisibleFormPraktikum(data))}
-        onSave={editData ? editSave : onSave}
-        titleButton='Simpan Praktikum'
-        loading={loading}
-      >
-        <div className='w-full space-x-1'>
-          <Input
-            type='text'
-            color='lightBlue'
-            size='regular'
-            outline={false}
-            placeholder='Title'
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <Input
-            type='text'
-            color='lightBlue'
-            size='regular'
-            outline={false}
-            placeholder='Code'
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-          />
-          <Editor data={editData.content} setData={setContent} />
+    return (
+        <div className='flex justify-end px-4'>
+            <Button
+                className='mb-10'
+                onClick={() => {
+                    setEmptyEditor(true);
+                    dispatch(SetCurrentQuestionForm(''));
+                    dispatch(SetVisibleFormPraktikum(true));
+                }}
+            >
+                Tambah Soal
+            </Button>
+            <ModalBase
+                visible={visible}
+                setVisible={(data) => dispatch(SetVisibleFormPraktikum(data))}
+                onSave={tambahSoal}
+                titleButton='Tambah Soal'
+            >
+                <div className='w-full space-x-1'>
+                    <Card className='mt-10'>
+                        <CardBody>
+                            <CardRow className='flex justify-between mb-5'>
+                                <H6 color='gray'>Soal ke - {key}</H6>
+                            </CardRow>
+                            <Editor
+                                editorStyle={{
+                                    height: '200px' || '500px',
+                                    overflow: 'auto',
+                                }}
+                                isReset={emptyEditor}
+                                resetEditor={setEmptyEditor}
+                                data={currentQuestionForm.question}
+                                setData={setQuestion}
+                            />
+                        </CardBody>
+                    </Card>
+                </div>
+            </ModalBase>
         </div>
-      </ModalBase>
-    </div>
-  );
+    );
 }
-// import ModalBase from 'components/base/Modal'
-export default ModalFormMateri;
+export default ModalFormPraktikum;
