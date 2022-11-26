@@ -14,9 +14,6 @@ function Praktikum() {
     <div className=' md:px-8 min-h-screen mt-10'>
       <div className='container mx-auto max-w-full'>
         <div className='flex justify-end px-4 mb-10 '>
-          <Button  color="gray" className="mr-5" onClick={() => history.push('/soal-latihan/penilaian')}>
-            Penilaian Praktikum
-          </Button>
           <Button onClick={() => history.push('/praktikum/form')}>
             Buat Soal Praktikum
           </Button>

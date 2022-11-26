@@ -38,7 +38,7 @@ function TableSoalLatihan() {
         setFilterData(filterData);
       }
     }, [search, listSoalLatihan]);
-  
+
     const columns = [
         {
           title: 'Title',
@@ -57,7 +57,7 @@ function TableSoalLatihan() {
                 console.log('item =>', item)
                 setdataConfirm(item)
             setModalPreview(true)
-               
+
               }}
             >
               View Questions
@@ -138,11 +138,10 @@ function TableSoalLatihan() {
 
     return (
         <>
-        <PreviewListQuestion 
+        <PreviewListQuestion
         visible={modalPreview}
         setVisible={setModalPreview}
         data={dataConfirm}
-        
         />
       <ModalConfirmation
         visible={visibleConfirm}
@@ -154,9 +153,9 @@ function TableSoalLatihan() {
         loading={loadingDelete}
       />
         <TableCard
-        title={"Tabel Soal Latihan"} 
+        title={"Tabel Soal Latihan"}
         actionTitle="Buat Soal Latihan"
-        columns={columns} 
+        columns={columns}
         data={search ? filterData : listSoalLatihan}
         searchValue={search}
         onSearch={(data)=> onSearch(data)}

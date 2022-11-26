@@ -12,6 +12,7 @@ import {
   SetCurrentPraktikum,
 } from 'stores/action/praktikumAction';
 import {useHistory} from "react-router-dom";
+import {SetCurrentSoalLatihan} from "../../stores/action/soalLatihanAction";
 
 
 function TablePraktikum() {
@@ -48,17 +49,16 @@ function TablePraktikum() {
           key: 'code',
         },
         {
-          title: 'Content',
-          key: 'content',
+          title: 'Questions',
+          key: 'questions',
           render: (item) => (
             <Button
               onClick={() => {
                 dispatch(SetCurrentPraktikum(item));
             setModalPreview(true)
-
               }}
             >
-              View Content
+              View Questions
             </Button>
           ),
         },
@@ -78,6 +78,16 @@ function TablePraktikum() {
           key: 'content',
           render: (item) => (
             <div className='flex space-x-1'>
+                <Button
+                    color='blueGray'
+                    buttonType='filled'
+                    onClick={() => {
+                        // dispatch(SetCurrentSoalLatihan(item));
+                        history.push(`/praktikum/penilaian/${item._id}`)
+                    }}
+                >
+                    Penilaian
+                </Button>
               <Button
                 color='blueGray'
                 buttonType='filled'

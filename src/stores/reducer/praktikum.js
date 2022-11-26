@@ -1,5 +1,6 @@
 const initialState = {
     data: [],
+  result:[],
   listQuestionForm: [],
   currentQuestionForm: '',
   visibleForm: false,
@@ -15,12 +16,6 @@ const initialState = {
           ...state,
           data: action.payload,
         };
-        case 'SET_VISIBLE_CONTENT_PRAKTIKUM':
-          return {
-            ...state,
-            visibleContent: action.payload,
-          };
-
         case 'SET_CURRENT_PRAKTIKUM':
           return {
             ...state,
@@ -43,6 +38,12 @@ const initialState = {
           ...state,
           visibleForm: action.payload,
         };
+
+      case 'SET_RESULT_PRAKTIKUM':
+        return {
+          ...state,
+          result: action.payload
+        }
       default:
         return state;
     }

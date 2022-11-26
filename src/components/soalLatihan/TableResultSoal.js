@@ -5,7 +5,6 @@ import axios from 'axios';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import ModalConfirmation from 'components/base/ModalConfirmation';
-// import ModalPreview from '../editor/ModalPreview'
 import PreviewListQuestion from './PreviewListQuestion';
 import {
   GetResultSoalLatihan
@@ -21,6 +20,7 @@ function TableResultSoal() {
   const [userAnswer, setUserAnswer] = useState([])
   const [visibleConfirm, setVisibleConfirm] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
+  const [loadingScore, setLoadingScore] = useState(false)
   const [modalPreview, setModalPreview] = useState(false)
   const [dataDelete, setDataDelete] = useState()
 
@@ -38,14 +38,18 @@ function TableResultSoal() {
         setFilterData(filterData);
       }
     }, [search, listResultSoal]);
-  
+
     const columns = [
+        {
+            title: 'Soal',
+            key: 'soal.title',
+        },
         {
           title: 'Nama Murid',
           key: 'user.name',
         },
         {
-            title: 'Email',
+            title: 'Murid',
             key: 'user.email',
           },
         {
@@ -54,6 +58,11 @@ function TableResultSoal() {
           render: (item) => (
             <div>{moment(item.createdAt).format('DD-MM-YYYY hh:mm')}</div>
           )
+        },
+
+        {
+            title: 'Score',
+            key: 'score',
         },
         {
           title: 'Action',
@@ -66,7 +75,7 @@ function TableResultSoal() {
                 onClick={() => {
                 console.log('item =>', item)
                 setUserAnswer(item.answer)
-                    setdataConfirm(item.soal)
+                    setdataConfirm(item)
                         setModalPreview(true)
                 }}
               >
@@ -97,6 +106,7 @@ function TableResultSoal() {
         })
           .then((response) => {
             setVisibleConfirm(false);
+
             dispatch(GetResultSoalLatihan(params.soalId));
           })
           .catch((e) => {
@@ -107,15 +117,43 @@ function TableResultSoal() {
           });
       };
 
+      const submitScore = (score) => {
+          setLoadingScore(true)
+          axios(`${process.env.REACT_APP_API_URL}/penilaian/score/soal/${dataConfirm._id}`, {
+              method: 'put',
+              headers: {
+                  token: user.token,
+              },
+              data: {
+                  score: score
+              }
+          })
+              .then((response) => {
+                  setVisibleConfirm(false);
+                  setModalPreview(false)
+                  dispatch(GetResultSoalLatihan(params.soalId));
+              })
+              .catch((e) => {
+                  console.log('error delete', e.message);
+              })
+              .finally(() => {
+                  setLoadingScore(false);
+              });
+
+      }
+
 
     return (
         <>
-        <PreviewListQuestion 
-        visible={modalPreview}
+        <PreviewListQuestion
+        visible={modalPreview || loadingScore}
         setVisible={setModalPreview}
-        data={dataConfirm}
+        data={dataConfirm.soal}
         answer={userAnswer}
-        
+        isAddScore={true}
+        score={dataConfirm.score}
+        loadingScore={loadingScore}
+        submitScore={submitScore}
         />
       <ModalConfirmation
         visible={visibleConfirm}
@@ -127,14 +165,13 @@ function TableResultSoal() {
         loading={loadingDelete}
       />
         <TableCard
-        title={"Tabel Penilaian Soal Latihan"} 
+        title={`Tabel Penilaian Soal Latihan`}
         // actionTitle="Buat Soal Latihan"
-        columns={columns} 
+        columns={columns}
         data={search ? filterData : listResultSoal}
         searchValue={search}
         onSearch={(data)=> onSearch(data)}
         visibleSearch={true}
-
         />
         </>
     )

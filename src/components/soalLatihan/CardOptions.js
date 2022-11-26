@@ -33,7 +33,7 @@ export default function CardSoal(props) {
   const getAnswer  = (item) => {
     const isFound = answer.find((a) => a.key === keyQuestion)
     console.log(isFound, item)
-    if(isFound && item.key === isFound.option) {
+    if(isFound && item.key === isFound.selectedOption) {
       return true
     }  else {
       return  false

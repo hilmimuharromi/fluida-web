@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {store} from "../index";
 
 const GetListPraktikum =  () => {
     return async(dispatch) => {
@@ -44,10 +45,28 @@ const SetCurrentQuestionForm = (data) => {
     };
 }
 
-const SetVisibleContentPraktikum = (data) => {
+const SetResultPraktikum = (data) => {
     return {
-        type: 'SET_VISIBLE_CONTENT_PRAKTIKUM', payload: data
+        type: 'SET_RESULT_PRAKTIKUM', payload: data
     };
+}
+
+const GetResultPraktikum =  (praktikumId) => {
+    const state = store.getState()
+    return async(dispatch) => {
+        const {data, status} = await axios({
+            url: `${process.env.REACT_APP_API_URL}/penilaian/praktikum/${praktikumId}`,
+            method: "GET",
+            headers:  {
+                token: state.user.data.token
+            }
+        })
+        console.log("result==>",  data, status)
+
+        if(status) {
+            dispatch(SetResultPraktikum(data.data))
+        }
+    }
 }
 
 
@@ -57,7 +76,7 @@ export {
     SetLoading,
     SetCurrentPraktikum,
     SetVisibleFormPraktikum,
-    SetVisibleContentPraktikum,
     SetQuestionsFormPraktikum,
-    SetCurrentQuestionForm
+    SetCurrentQuestionForm,
+    GetResultPraktikum
 }

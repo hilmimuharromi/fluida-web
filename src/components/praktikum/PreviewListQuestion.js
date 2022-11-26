@@ -1,13 +1,24 @@
 import React, {useState, useEffect} from 'react'
 import PreviewHtml from '../editor/preview'
 import ModalBase from 'components/base/Modal';
-import CardOptions from './CardOptions'
 import Button from "@material-tailwind/react/Button";
-import {Input} from "@material-tailwind/react";
-
+import {
+    CardRow,
+    CardFooter,
+    Input,
+    Textarea,
+    Checkbox,
+} from '@material-tailwind/react';
 function PreviewListQuestion(props) {
     const {visible, setVisible, data, answer, isAddScore, submitScore, loadingScore} = props
     const [score, setScore] = useState(props.score)
+
+    const getAnswer  = (item) => {
+        const isFound = answer.find((a) => a.key === item.key)
+        if (isFound) {
+        return isFound.essay
+        } else return ''
+    }
 
     useEffect(() => {
         if(props.score) {
@@ -25,7 +36,17 @@ function PreviewListQuestion(props) {
              data &&  data.questions.map((item) => (
                   <>
                   <PreviewHtml title={`Soal ke - ${item.key}`} content={item.question} />
-                  <CardOptions options={item.options} keyQuestion={item.key} answer={answer} disabled={true}/>
+                      <CardFooter className={'my-5 h-100'}>
+                          <Textarea
+                              type='text'
+                              color='lightBlue'
+                              size='regular'
+                              placeholder={`Jawaban Siswa`}
+                              outline={true}
+                              disabled={true}
+                              value={getAnswer(item)}
+                          />
+                      </CardFooter>
                  </>
              ))
           }

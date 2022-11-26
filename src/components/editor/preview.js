@@ -20,7 +20,7 @@ export default function PreviewHtml(props) {
     return (
         <>
             <Card  title={title} bordered={false}>
-            {title && 
+            {title &&
             <CardHeader color="lightBlue" size="md">
                 <H5 color="white">{title}</H5>
             </CardHeader>
@@ -29,10 +29,8 @@ export default function PreviewHtml(props) {
                 {
                    content && parse(content, options)
                 }
-
                 </CardBody>
             </Card>
-
         </>
 
     )
