@@ -81,7 +81,7 @@ function TableSoalLatihan() {
           render: (item) => (
             <div className='flex space-x-1'>
               <Button
-                color='blueGray'
+                color='blue'
                 buttonType='filled'
                 onClick={() => {
                   dispatch(SetCurrentSoalLatihan(item));

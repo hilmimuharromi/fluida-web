@@ -61,8 +61,6 @@ const GetResultPraktikum =  (praktikumId) => {
                 token: state.user.data.token
             }
         })
-        console.log("result==>",  data, status)
-
         if(status) {
             dispatch(SetResultPraktikum(data.data))
         }

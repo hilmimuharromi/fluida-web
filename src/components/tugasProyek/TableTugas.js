@@ -12,10 +12,11 @@ import {
   SetVisibleFormTugasProyek,
   SetCurrentTugasProyek,
 } from 'stores/action/tugasProyekAction';
-
+import {useHistory} from "react-router-dom";
 
 function TableTugas() {
     const dispatch = useDispatch()
+    const history = useHistory()
   const [dataConfirm, setdataConfirm] = useState('');
   const [visibleConfirm, setVisibleConfirm] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -36,7 +37,7 @@ function TableTugas() {
         setFilterData(filterData);
       }
     }, [search, listTugasProyek]);
-  
+
     const columns = [
         {
           title: 'Title',
@@ -54,7 +55,7 @@ function TableTugas() {
               onClick={() => {
                 dispatch(SetCurrentTugasProyek(item));
             setModalPreview(true)
-               
+
               }}
             >
               View Content
@@ -77,6 +78,17 @@ function TableTugas() {
           key: 'content',
           render: (item) => (
             <div className='flex space-x-1'>
+                <Button
+                    color='blue'
+                    buttonType='filled'
+                    onClick={() => {
+                        dispatch(SetCurrentTugasProyek(item));
+                        // dispatch(SetVisibleFormTugasProyek(true));
+                        history.push(`/tugas-proyek/penilaian/${item._id}`)
+                    }}
+                >
+                    Penilaian
+                </Button>
               <Button
                 color='blueGray'
                 buttonType='filled'
@@ -125,7 +137,7 @@ function TableTugas() {
 
     return (
         <>
-        <ModalPreview visible={modalPreview} 
+        <ModalPreview visible={modalPreview}
       setVisible={(data) => {
         setModalPreview(data)
         dispatch(SetCurrentTugasProyek(''));
@@ -142,9 +154,9 @@ function TableTugas() {
         loading={loadingDelete}
       />
         <TableCard
-        title={"Tabel Tugas Proyek"} 
+        title={"Tabel Tugas Proyek"}
         actionTitle="New Tugas Proyek"
-        columns={columns} 
+        columns={columns}
         data={search ? filterData : listTugasProyek}
         searchValue={search}
         onSearch={(data)=> onSearch(data)}

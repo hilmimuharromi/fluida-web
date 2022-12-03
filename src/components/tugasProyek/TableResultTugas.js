@@ -5,44 +5,43 @@ import axios from 'axios';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import ModalConfirmation from 'components/base/ModalConfirmation';
-import PreviewListQuestion from './PreviewListQuestion';
 import {
-    GetResultPraktikum
-} from 'stores/action/praktikumAction';
+    GetResultTugasProyek
+} from 'stores/action/tugasProyekAction';
 import {useParams} from "react-router-dom"
+import PreviewResultProyek from "./PreviewResultProyek";
 
 
-
-function TableResultPraktikum() {
+function TableResultProyek() {
     const dispatch = useDispatch()
     const params = useParams()
     const [dataConfirm, setdataConfirm] = useState('');
-    const [userAnswer, setUserAnswer] = useState([])
     const [visibleConfirm, setVisibleConfirm] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
     const [loadingScore, setLoadingScore] = useState(false)
     const [modalPreview, setModalPreview] = useState(false)
     const [dataDelete, setDataDelete] = useState()
+    const [score, setScore] = useState(dataConfirm.score)
 
     const [filterData, setFilterData] = useState([]);
-    const listResultPraktikum = useSelector((state) => state.praktikum.result);
+    const listResultProyek = useSelector((state) => state.tugasProyek.result);
     const user = useSelector((state) => state.user.data);
     const [search, onSearch] = useState('')
 
     useEffect(() => {
         if (search) {
             let searchFormat = search.toLowerCase();
-            const filterData = listResultPraktikum.filter((item) =>
+            const filterData = listResultProyek.filter((item) =>
                 item.user.name.toLowerCase().includes(searchFormat)
             );
             setFilterData(filterData);
         }
-    }, [search, listResultPraktikum]);
+    }, [search, listResultProyek]);
 
     const columns = [
         {
-            title: 'Paktikum',
-            key: 'praktikum.title',
+            title: 'Proyek',
+            key: 'proyek.title',
         },
         {
             title: 'Nama Murid',
@@ -72,10 +71,12 @@ function TableResultPraktikum() {
                         color='blueGray'
                         buttonType='filled'
                         onClick={() => {
-                            console.log('item =>', item)
-                            setUserAnswer(item.answer)
                             setdataConfirm(item)
+
                             setModalPreview(true)
+
+                            console.log('item =>', item)
+                            // setUserAnswer(item.answer)
                         }}
                     >
                         Lihat Jawaban
@@ -95,18 +96,18 @@ function TableResultPraktikum() {
         },
     ];
 
-    const deleteSoalLatihan = () => {
+    const deleteResultProyek = () => {
         setLoadingDelete(true);
-        axios(`${process.env.REACT_APP_API_URL}/penilaian/praktikum/${dataDelete._id}`, {
+        axios(`${process.env.REACT_APP_API_URL}/penilaian/proyek/${dataDelete._id}`, {
             method: 'delete',
             headers: {
                 token: user.token,
             },
         })
-            .then((response) => {
+            .then(() => {
                 setVisibleConfirm(false);
 
-                dispatch(GetResultPraktikum(params.praktikumId));
+                dispatch(GetResultTugasProyek(params.proyekId));
             })
             .catch((e) => {
                 console.log('error delete', e.message);
@@ -118,7 +119,7 @@ function TableResultPraktikum() {
 
     const submitScore = (score) => {
         setLoadingScore(true)
-        axios(`${process.env.REACT_APP_API_URL}/penilaian/score/praktikum/${dataConfirm._id}`, {
+        axios(`${process.env.REACT_APP_API_URL}/penilaian/score/proyek/${dataConfirm._id}`, {
             method: 'put',
             headers: {
                 token: user.token,
@@ -127,10 +128,10 @@ function TableResultPraktikum() {
                 score: score
             }
         })
-            .then((response) => {
+            .then(() => {
                 setVisibleConfirm(false);
                 setModalPreview(false)
-                dispatch(GetResultPraktikum(params.praktikumId));
+                dispatch(GetResultTugasProyek(params.proyekId));
             })
             .catch((e) => {
                 console.log('error delete', e.message);
@@ -144,30 +145,30 @@ function TableResultPraktikum() {
 
     return (
         <>
-            <PreviewListQuestion
-                visible={modalPreview || loadingScore}
+
+            <PreviewResultProyek
+                visible={modalPreview}
                 setVisible={setModalPreview}
-                data={dataConfirm}
-                answer={userAnswer}
-                isAddScore={true}
-                score={dataConfirm}
-                loadingScore={loadingScore}
+                 data={dataConfirm}
+                isAddScore
+                setScore={setScore}
+                score={score}
                 submitScore={submitScore}
+                loadingScore={loadingScore}
             />
             <ModalConfirmation
                 visible={visibleConfirm}
                 setVisible={setVisibleConfirm}
-                title={'Hapus Jawaban Soal Latihan'}
-                description='Anda Yakin akan menghapus jawaban user Soal Latihan ini'
+                title={'Hapus Jawaban Tugas Proyek'}
+                description='Anda Yakin akan menghapus jawaban ini'
                 titleButton='Hapus'
-                onSave={deleteSoalLatihan}
+                onSave={deleteResultProyek}
                 loading={loadingDelete}
             />
             <TableCard
-                title={`Tabel Penilaian Praktikum`}
-                // actionTitle="Buat Soal Latihan"
+                title={`Tabel Penilaian Tugas Proyek`}
                 columns={columns}
-                data={search ? filterData : listResultPraktikum}
+                data={search ? filterData : listResultProyek}
                 searchValue={search}
                 onSearch={(data)=> onSearch(data)}
                 visibleSearch={true}
@@ -176,4 +177,4 @@ function TableResultPraktikum() {
     )
 }
 
-export default TableResultPraktikum
+export default TableResultProyek

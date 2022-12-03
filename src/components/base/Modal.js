@@ -13,12 +13,12 @@ function ModalBase(props) {
         <ModalBody>
           {children}
         </ModalBody>
-        {!hideFooter && 
+        {!hideFooter &&
         <ModalFooter>
-            <Button 
+            <Button
                 color="red"
                 buttonType="link"
-                onClick={(e) =>setVisible(false)}
+                onClick={() =>setVisible(false)}
                 ripple="dark"
             >
                 Close

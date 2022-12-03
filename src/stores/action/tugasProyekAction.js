@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {store} from "../index";
 
 const GetListTugasProyek =  () => {
     return async(dispatch) => {
@@ -29,14 +30,28 @@ const SetVisibleFormTugasProyek = (data) => {
     return {
         type: 'SET_VISIBLE_FORM_TUGAS_PROYEK', payload: data
     };
-
 }
 
-const SetVisibleContentTugasProyek = (data) => {
+const SetResultProyek = (data) => {
     return {
-        type: 'SET_VISIBLE_CONTENT_TUGAS_PROYEK', payload: data
+        type: 'SET_RESULT_PROYEK', payload: data
     };
+}
 
+const GetResultTugasProyek =  (proyekId) => {
+    const state = store.getState()
+    return async(dispatch) => {
+        const {data, status} = await axios({
+            url: `${process.env.REACT_APP_API_URL}/penilaian/proyek/${proyekId}`,
+            method: "GET",
+            headers:  {
+                token: state.user.data.token
+            }
+        })
+        if(status) {
+            dispatch(SetResultProyek(data.data))
+        }
+    }
 }
 
 
@@ -46,5 +61,5 @@ export {
     SetLoading,
     SetCurrentTugasProyek,
     SetVisibleFormTugasProyek,
-    SetVisibleContentTugasProyek
+    GetResultTugasProyek
 }

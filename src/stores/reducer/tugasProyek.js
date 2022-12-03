@@ -4,8 +4,9 @@ const initialState = {
     visibleForm: false,
     visibleContent: false,
     loading: false,
+  result: []
   };
-  
+
   const tugasProyekState = (state = initialState, action) => {
     switch (action.type) {
       case 'SET_TUGAS_PROYEK':
@@ -13,7 +14,7 @@ const initialState = {
           ...state,
           data: action.payload,
         };
-  
+
       case 'SET_VISIBLE_FORM_TUGAS_PROYEK':
         return {
           ...state,
@@ -24,15 +25,20 @@ const initialState = {
             ...state,
             visibleContent: action.payload,
           };
-  
+
         case 'SET_CURRENT_TUGAS_PROYEK':
           return {
             ...state,
             currentData: action.payload,
           };
+
+      case 'SET_RESULT_PROYEK':
+        return {
+          ...state,
+          result: action.payload
+        }
       default:
         return state;
     }
   };
   export default tugasProyekState;
-  
