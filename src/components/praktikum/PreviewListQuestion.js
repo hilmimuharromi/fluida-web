@@ -3,11 +3,9 @@ import PreviewHtml from '../editor/preview'
 import ModalBase from 'components/base/Modal';
 import Button from "@material-tailwind/react/Button";
 import {
-    CardRow,
     CardFooter,
     Input,
     Textarea,
-    Checkbox,
 } from '@material-tailwind/react';
 function PreviewListQuestion(props) {
     const {visible, setVisible, data, answer, isAddScore, submitScore, loadingScore} = props

@@ -12,7 +12,6 @@ import {
   SetCurrentPraktikum,
 } from 'stores/action/praktikumAction';
 import {useHistory} from "react-router-dom";
-import {SetCurrentSoalLatihan} from "../../stores/action/soalLatihanAction";
 
 
 function TablePraktikum() {
