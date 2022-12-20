@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import TableSoal from 'components/soalLatihan/TableSoal';
 import { Button } from '@material-tailwind/react';
 import { useHistory } from 'react-router-dom';
-import {GetListSoalLatihan} from 'stores/action/soalLatihanAction'
+import {GetListSoalLatihan, SetListQuestionForm,SetCurrentQuestionForm, SetCurrentSoalLatihan} from 'stores/action/soalLatihanAction'
 import {useDispatch} from 'react-redux'
 
 function SoalLatihan() {
@@ -17,7 +17,11 @@ function SoalLatihan() {
     <div className=' md:px-8 min-h-screen mt-10'>
       <div className='container mx-auto max-w-full'>
         <div className='flex justify-end px-4 mb-10 '>
-          <Button onClick={() => history.push('/soal-latihan/form')}>
+          <Button onClick={() => {
+             dispatch(SetListQuestionForm([]))
+             dispatch(SetCurrentQuestionForm(''))
+             dispatch(SetCurrentSoalLatihan(''))
+            history.push('/soal-latihan/form')}}>
             Buat Soal Latihan
           </Button>
         </div>
