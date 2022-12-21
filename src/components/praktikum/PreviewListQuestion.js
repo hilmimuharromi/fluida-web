@@ -23,6 +23,7 @@ function PreviewListQuestion(props) {
             setScore(props.score)
         }
     }, [props.score])
+
     return (
         <ModalBase
         className="min-w-6/12"
@@ -31,7 +32,7 @@ function PreviewListQuestion(props) {
         hideFooter={true}
       >
           {
-             data &&  data.questions.map((item) => (
+             data &&  data.praktikum.questions.map((item) => (
                   <>
                   <PreviewHtml title={`Soal ke - ${item.key}`} content={item.question} />
                       <CardFooter className={'my-5 h-100'}>

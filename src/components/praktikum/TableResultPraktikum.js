@@ -150,7 +150,7 @@ function TableResultPraktikum() {
                 data={dataConfirm}
                 answer={userAnswer}
                 isAddScore={true}
-                score={dataConfirm}
+                score={dataConfirm.score}
                 loadingScore={loadingScore}
                 submitScore={submitScore}
             />
