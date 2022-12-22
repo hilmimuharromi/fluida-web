@@ -16,12 +16,14 @@ function PlaylistForm() {
 
   const [visibleModal, setVisibleModal] = useState(false);
   const [title, setTitle] = useState('');
+  const [coverImage, setCoverImage] = useState('')
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (dataStore) {
       setTitle(dataStore.title);
+      setCoverImage(dataStore.coverImage)
       let newItems = dataStore.contents.map((item) => {
         return {
           _id: item[item.flag]._id,
@@ -81,11 +83,9 @@ function PlaylistForm() {
 
     const payload = {
       title,
+      coverImage,
       contents,
     };
-
-    console.log('simpan data', payload);
-    console.log('data store', dataStore);
 
     let url = '/playlist';
     let method = 'post';
@@ -105,6 +105,7 @@ function PlaylistForm() {
       .then((res) => {
         setItems([]);
         setTitle('');
+        setCoverImage('')
         dispatch(SetCurrentPlaylist(''));
         history.push('/playlist');
       })
@@ -147,6 +148,17 @@ function PlaylistForm() {
               placeholder='Title'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div className='flex justify-end px-4 mb-10 '>
+            <Input
+              type='text'
+              color='lightBlue'
+              size='regular'
+              outline={false}
+              placeholder='Cover Image'
+              value={coverImage}
+              onChange={(e) => setCoverImage(e.target.value)}
             />
           </div>
           <div className='flex space-x-5'>

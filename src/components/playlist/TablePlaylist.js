@@ -1,7 +1,7 @@
 import TableCard from '../base/TableCard';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Button } from '@material-tailwind/react';
+import { Button,Image } from '@material-tailwind/react';
 import moment from 'moment';
 import ModalContents from './ModalContents';
 import ModalConfirmation from 'components/base/ModalConfirmation';
@@ -24,10 +24,16 @@ function TablePlaylist() {
   const [loading, setLoading] = useState(false);
   const columns = [
     {
+      title: 'Cover',
+      key: 'coverImage',
+      render: (item) => (
+        <Image width={100}  src={item.coverImage}/>
+      ),
+    },
+    {
       title: 'Title',
       key: 'title',
     },
-
     {
       title: 'Contents',
       key: 'contents',
@@ -78,8 +84,6 @@ history.push('/playlist/form')
   ];
 
   const deletePlaylist = () => {
-    console.log('yes hapus');
-
     setLoading(true);
     axios(`${process.env.REACT_APP_API_URL}/playlist/${deleteId}`, {
       method: 'delete',
