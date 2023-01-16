@@ -3,7 +3,7 @@ import ModalBase from 'components/base/Modal';
 import { Button, Input } from '@material-tailwind/react';
 import Editor from '../editor';
 import { useSelector, useDispatch } from 'react-redux';
-import { GetListTugasProyek, SetVisibleFormTugasProyek } from 'stores/action/tugasProyekAction';
+import {GetListTugasProyek, SetCurrentTugasProyek, SetVisibleFormTugasProyek} from 'stores/action/tugasProyekAction';
 import axios from 'axios'
 function ModalFormMateri() {
   const dispatch = useDispatch();
@@ -93,8 +93,9 @@ const editSave = () => {
       <Button
         className='mb-10'
         onClick={() => {
+            dispatch(SetCurrentTugasProyek(''));
             dispatch(SetVisibleFormTugasProyek(true))}}
-       
+
       >
         New Tugas Proyek
       </Button>
